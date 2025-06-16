@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Petualangan Al-Qadir</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #e0f7fa;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #00796b;
+        }
+        .question {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+        .choices button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 1em;
+            background-color: #80cbc4;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .choices button:hover {
+            background-color: #4db6ac;
+        }
+        .feedback {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #nextBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Petualangan Al-Qadir</h1>
+        <div class="question" id="question">Siapa yang menciptakan langit dan awan?</div>
+        <div class="choices">
+            <button onclick="checkAnswer(0)">Manusia</button>
+            <button onclick="checkAnswer(1)">Allah</button>
+            <button onclick="checkAnswer(2)">Robot</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <button id="nextBtn" onclick="nextQuestion()">Pertanyaan Selanjutnya</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Siapa yang menciptakan langit dan awan?",
+                choices: ["Manusia", "Allah", "Robot"],
+                answer: 1
+            },
+            {
+                question: "Hewan besar seperti paus hidup di mana?",
+                choices: ["Hutan", "Laut", "Gunung"],
+                answer: 1
+            },
+            {
+                question: "Siapa yang memberi kita mata untuk melihat?",
+                choices: ["Allah", "Dokter", "Matahari"],
+                answer: 0
+            },
+            {
+                question: "Siapa yang menciptakan segala sesuatu di dunia ini?",
+                choices: ["Allah", "Manusia", "Alam"],
+                answer: 0
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            document.getElementById("feedback").innerText = "";
+            document.getElementById("nextBtn").style.display = "none";
+            const q = questions[currentQuestion];
+            document.getElementById("question").innerText = q.question;
+            const buttons = document.querySelectorAll(".choices button");
+            buttons.forEach((btn, i) => {
+                btn.innerText = q.choices[i];
+                btn.disabled = false;
+            });
+        }
+
+        function checkAnswer(choice) {
+            const q = questions[currentQuestion];
+            const feedback = document.getElementById("feedback");
+            const buttons = document.querySelectorAll(".choices button");
+            buttons.forEach(btn => btn.disabled = true);
+            if (choice === q.answer) {
+                feedback.innerText = "Benar! MasyaAllah 🥰";
+                feedback.style.color = "green";
+                document.getElementById("nextBtn").style.display = "inline-block";
+            } else {
+                feedback.innerText = "Yuk coba lagi 😅";
+                feedback.style.color = "red";
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                document.querySelector(".container").innerHTML = `
+                    <h1>MasyaAllah!</h1>
+                    <p>Kamu sudah selesai menjawab semua pertanyaan 🎉</p>
+                    <p>Allah itu Maha Kuasa atas segala sesuatu!</p>
+                `;
+            }
+        }
+
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
